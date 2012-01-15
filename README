@@ -10,5 +10,13 @@ About
 Requirements
 ============
 
+- Download osm2po (http://osm2po.de/download.php?lnk=osm2po-4.x.xx.zip) and save as osm2po.zip into ./setup directory to be used with the installation script. 
+
+
+Installation
+============
+
+./setup/install_packages.sh
+./setup/install_data.sh
 
 
