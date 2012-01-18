@@ -30,8 +30,8 @@ SET default_with_oids = false;
 CREATE TABLE classes (
     tag text,
     clazz integer NOT NULL,
-    defaultspeed integer DEFAULT 10,
-    enabled boolean DEFAULT true,
+    defaultspeed integer NOT NULL DEFAULT 10,
+    enabled boolean NOT NULL DEFAULT true,
     id integer NOT NULL,
     title text NOT NULL
 );
@@ -73,9 +73,9 @@ SELECT pg_catalog.setval('classes_id_seq', 21, true);
 
 CREATE TABLE configuration (
     speed integer NOT NULL,
-    enabled boolean DEFAULT true,
-    pid integer,
-    cid integer
+    enabled boolean NOT NULL DEFAULT true,
+    pid integer NOT NULL,
+    cid integer NOT NULL
 );
 
 
@@ -150,18 +150,17 @@ SELECT pg_catalog.setval('logs_id_seq', 1, false);
 --
 
 CREATE TABLE profiles (
-    key text,
-    title text,
+    key text NOT NULL,
+    title text NOT NULL,
     description text,
-    reverse_cost boolean DEFAULT true,
+    reverse_cost boolean NOT NULL DEFAULT true,
     id integer NOT NULL,
     rid integer,
-    public boolean DEFAULT true,
-    enabled boolean DEFAULT true,
+    public boolean NOT NULL DEFAULT true,
+    enabled boolean NOT NULL DEFAULT true,
     created timestamp with time zone DEFAULT now(),
-    updated timestamp with time zone DEFAULT now(),
-    pgr_sp boolean DEFAULT true,
-    pgr_dd boolean DEFAULT true
+    pgr_sp boolean NOT NULL DEFAULT true,
+    pgr_dd boolean NOT NULL DEFAULT true
 );
 
 
@@ -204,7 +203,7 @@ CREATE TABLE resources (
     title text NOT NULL,
     description text,
     resource text NOT NULL,
-    enabled boolean DEFAULT true
+    enabled boolean NOT NULL DEFAULT true
 );
 
 
@@ -346,8 +345,8 @@ COPY logs (id, request, response, clf_host, clf_userid, clf_request, clf_status,
 -- Data for Name: profiles; Type: TABLE DATA; Schema: app; Owner: postgres
 --
 
-COPY profiles (key, title, description, reverse_cost, id, rid, public, enabled, created, updated, pgr_sp, pgr_dd) FROM stdin;
-a27fb9d8ace734e3b4395ec342ddb35c	Standard	Standard Profil	t	1	1	f	t	2011-12-02 13:29:16.837173+09	2011-12-02 13:29:30.725373+09	t	t
+COPY profiles (key, title, description, reverse_cost, id, rid, public, enabled, created, pgr_sp, pgr_dd) FROM stdin;
+a27fb9d8ace734e3b4395ec342ddb35c	Standard	Standard Profil	t	1	1	f	t	2011-12-02 13:29:16.837173+09	t	t
 \.
 
 
