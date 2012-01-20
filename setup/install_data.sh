@@ -105,7 +105,8 @@ sudo -u postgres createdb -E UTF8 -T template_routing $database
 
 # Load tables and functions
 printf "%-25s %-50s\n\n" "Load tables and functions ..."
-sudo -u postgres psql --quiet -d $database -f $DIRECTORY/schema_app.dump
+sudo -u postgres psql --quiet -d $database -f $DIRECTORY/../src/sql/routing_service_wrapper.sqlschema_app.sql
+sudo -u postgres psql --quiet -d $database -f $DIRECTORY/../src/sql/schema_app.sql
 sudo -u postgres psql --quiet -d $database -c "CREATE SCHEMA data"
 
 # Process road network data
@@ -126,7 +127,7 @@ psql -U postgres -d routing -c "UPDATE public.geometry_columns SET f_table_schem
 
 # Add sample profile view
 printf "%-25s %-50s\n\n" "Add sample profile view ..."
-sudo -u postgres psql --quiet -d $database -f $DIRECTORY/view_profile_1.sql
+sudo -u postgres psql --quiet -d $database -f $DIRECTORY/../src/sql/view_profile_1.sql
 
 # Show database
 printf "%-25s %-50s\n" "Available tables:"
