@@ -85,7 +85,7 @@ public class RouteRestService {
 				target = dbProc.transformPoint(target, epsg);
 			}
 			
-			retval = dbProc.findShortestPath(
+			retval = dbProc.findShortestPath(prop.getId(),
 					source, target,prop.isReverse_cost());
 		}
 		catch( Exception ex ) {
@@ -157,6 +157,7 @@ public class RouteRestService {
 			String xy[]= tmp.replace(")", "").split(" ");
 
 			retval = dbProc.findDrivingDistance(
+					prop.getId(),
 					Double.parseDouble(xy[0]), 
 					Double.parseDouble(xy[1]), dist, mode,
 					prop.isReverse_cost() );

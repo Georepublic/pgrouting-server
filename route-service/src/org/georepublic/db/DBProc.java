@@ -105,8 +105,10 @@ public class DBProc {
 		return retVal;
 	}
 
-	public String findDrivingDistance(double x,double y,double distance,
+	public String findDrivingDistance(int id,double x,double y,double distance,
 			String mode, boolean is_reverse_cost) {
+		
+		String rTable = "road_profile_"+id;
 		
 		StringBuffer sb = new StringBuffer();
 		
@@ -127,7 +129,7 @@ public class DBProc {
 		
 		sb.append("select st_asgeojson(the_geom) as the_geom ");
 		sb.append("from driving_distance_service('");
-		sb.append(RouteProperties.getTable()).append("',");
+		sb.append( rTable ).append("',");
 		sb.append(x).append(",").append(y).append(",");
 		sb.append(distance).append(",");
 		sb.append(cost).append(",").append(reverse_cost).append(",");
@@ -200,8 +202,10 @@ public class DBProc {
 	 * Finding Shortest Path based on entered WKT points.
 	 * Returns a JSON String that contains the path. 
 	 */
-	public String findShortestPath(String source,String target,
+	public String findShortestPath(int id,String source,String target,
 			boolean reverse_cost ) {
+		
+		String rTable = "road_profile_"+id;
 		
 		StringBuffer sb = new StringBuffer();
 		
@@ -219,7 +223,7 @@ public class DBProc {
 		sb.append("st_asgeojson(st_linemerge(the_geom)) as the_geom ");
 		sb.append("from find_astar_sp('").append(source).append("','");
 		sb.append(target).append("',").append(RouteProperties.getBbox_sp());
-		sb.append(",'").append(RouteProperties.getTable());
+		sb.append(",'").append( rTable );
 		sb.append("',").append(RouteProperties.getDirected());
 		sb.append(",").append( reverse_cost ).append(")");
 				
@@ -530,6 +534,13 @@ public class DBProc {
 		return rval;
 	}
 	
+	public void deleteProfilesByKey( String key ) {
+	
+		String json = "{\"key\":[\""+key+"\"]}";
+		this.deleteProfiles(json);
+		
+	}
+	
 	public String deleteProfiles(String inJson) {
 		String retval = new String();
 		boolean retbool;
@@ -542,10 +553,29 @@ public class DBProc {
 			Connection conn = dbConn.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(
 					"delete from app.profiles where key = ?");
+			PreparedStatement pstmt2 = conn.prepareStatement(
+					"delete from app.configuration where pid = ?");
+			PreparedStatement pstmt3 = conn.prepareStatement(
+					"select drop_profile_view(?)");
+			PreparedStatement keyStmt = conn.prepareStatement(
+					"select id from app.profiles where key = ?");
 			
 			for(int i=0;i<keys.size();i++){
+				
+				keyStmt.setString(1,keys.getString(i));
+				ResultSet rs = keyStmt.executeQuery();
+				
+				if( rs.next() ) {
+					int id = rs.getInt("id");
+					pstmt2.setInt(1, id);
+					pstmt2.execute();
+					pstmt3.setInt(1, id);
+					pstmt3.execute();
+				}
 				pstmt.setString(1, keys.getString(i));
 				pstmt.execute();
+				
+				rs.close();
 			}
 			
 			retval = "Sucessfully completed";
@@ -602,9 +632,7 @@ public class DBProc {
 				key = kjo.getJSONObject("data").getString("key");
 			}
 			else {
-				Statement s = conn.createStatement();
-				s.execute("delete from app.profiles where key='"+key+"'");
-				s.close();
+				this.deleteProfilesByKey(key);
 			}
 			
 			StringBuffer sb = new StringBuffer();
@@ -657,6 +685,12 @@ public class DBProc {
 				pstmt3.execute();
 			}
 			
+			PreparedStatement pstmt4 = conn.prepareStatement(
+					"select create_profile_view(?,?)" );
+			pstmt4.setInt   (1, recId);
+			pstmt4.setString(2, RouteProperties.getTable());
+			pstmt4.execute();
+			
 			retval = "Sucessfully completed";
 			retcode= 201;
 			retbool= true;
@@ -666,6 +700,7 @@ public class DBProc {
 			pstmt.close();
 			pstmt2.close();
 			pstmt3.close();
+			pstmt4.close();
 			conn.close();
 		}
 		catch( JSONException je ) {
