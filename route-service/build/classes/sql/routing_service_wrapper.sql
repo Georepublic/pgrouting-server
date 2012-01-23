@@ -307,6 +307,107 @@ END;
 $$
 LANGUAGE 'plpgsql' VOLATILE STRICT;
 
+--******************************************************************
+--* This function is automates the creating of road profile  
+--* views based on the profile id, and the insertion of the view
+--* into geometry_column.
+--******************************************************************
+
+CREATE OR REPLACE FUNCTION create_profile_view(pid integer,road_table varchar) 
+RETURNS integer AS 
+$$	
+DECLARE
+	tabName text;
+	rTab    text;
+	rSchema text;
+	cView   text;
+	cAlter  text;
+	srid    integer;
+	tGeom   text;
+	row     record;
+BEGIN
+	tabName := 'road_profile_' || pid;
+	
+	rTab    := split_part(road_table,'.',2);
+	rSchema := split_part(road_table,'.',1);
+	
+	IF rTab IS NULL THEN 
+	  	rSchema := 'public';
+		rTab    := road_table;
+	END IF;
+	
+	FOR row IN EXECUTE 'select srid,f_geometry_column from geometry_columns ' || 
+    	'where f_table_name ='''|| rTab ||''' and f_table_schema =''' || 
+    	rSchema || '''' LOOP
+    END LOOP;
+	srid:= row.srid; 
+	tGeom:= row.f_geometry_column;
+	
+	cView := 'create or replace view public.'|| tabName || ' AS ' ||
+		'SELECT osm.id AS gid, cls.title AS class, ' || 
+		'round(osm.km * 1000::double precision) AS length, '||
+		'osm.osm_name AS name, CASE WHEN osm.cost < 1000000::double precision '||
+		'THEN round(osm.km / cls.speed::double precision * 3600::double precision) ' ||
+		'ELSE 1000000::double precision END AS cost,' ||
+		'CASE WHEN osm.reverse_cost < 1000000::double precision THEN ' || 
+		'round(osm.km / cls.speed::double precision * 3600::double precision) '||
+		'ELSE 1000000::double precision '||
+		'END AS reverse_cost, osm.source, osm.target, osm.x1, ' || 
+		'osm.y1, osm.x2, osm.y2, osm.'||tGeom||' AS the_geom, cls.pid ' ||
+		'FROM '|| road_table ||' osm ' ||
+		'LEFT JOIN ( SELECT a.speed, b.defaultspeed, a.enabled AS '|| 
+		'cfg_enabled, b.enabled AS cls_enabled, a.pid, a.cid AS class, b.tag, b.title
+           FROM app.configuration a
+      LEFT JOIN app.classes b ON b.clazz = a.cid
+     WHERE a.pid = '||pid||') cls ON osm.clazz = cls.class
+  WHERE cls.cls_enabled AND cls.cfg_enabled';
+		
+    cAlter := 'ALTER TABLE '||tabName||' OWNER TO postgres';
+    
+    EXECUTE cView;
+    EXECUTE cAlter;
+	
+    EXECUTE 'delete from geometry_columns where f_table_name=''' ||tabName||
+   		''' and f_table_schema =''public'' ';
+    
+    EXECUTE 'insert into geometry_columns values ('' '',''public'',''' ||
+    	tabName||''',''the_geom'',2,'||srid||',''MULTILINESTRING'')';
+    
+	RETURN 1;
+END;
+$$
+LANGUAGE 'plpgsql' VOLATILE STRICT;
+	
+--******************************************************************
+--* This function is automates the delete of road profile  
+--* views based on the profile id, and the deletion of the view
+--* into geometry_column.
+--******************************************************************
+
+CREATE OR REPLACE FUNCTION drop_profile_view(pid integer) 
+RETURNS integer AS 
+$$	
+DECLARE
+	tabName text;
+BEGIN
+	tabName := 'road_profile_' || pid;
+	
+	EXECUTE 'delete from geometry_columns where f_table_name=''' ||tabName||
+   		''' and f_table_schema =''public'' ';
+    
+   	EXECUTE 'drop view public.'|| tabName;
+   	
+   	RETURN 1;
+END;
+$$
+LANGUAGE 'plpgsql' VOLATILE STRICT;
+
+
+--******************************************************************
+--* This function is the same as driving_distance fucntion of 
+--* pgRouting_dd except for the added bbox parmeter used in
+--* computing the BBOX that will be independent of cost
+--******************************************************************
 
 CREATE OR REPLACE FUNCTION driving_distance_service(
 	table_name varchar, x double precision, y double precision,
