@@ -478,6 +478,7 @@ public class DBProc {
 				profile.put("title"       , rs.getString("title"));
 				profile.put("description" , rs.getString("description"));
 				profile.put("reverse_cost", rs.getBoolean("reverse_cost"));
+				profile.put("public"      , rs.getBoolean("public"));
 				profile.put("enabled"     , rs.getBoolean("enabled"));
 				profile.put("pgr_sp"      , rs.getBoolean("pgr_sp"));
 				profile.put("pgr_dd"      , rs.getBoolean("pgr_dd"));
