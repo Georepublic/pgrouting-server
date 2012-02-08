@@ -22,6 +22,7 @@ public class ProfileProperties {
 
 	private String key = null;
 	private int    id;
+	private int    rid;
 	private boolean pPublic = true;
 	private boolean pEnabled= true;
 	private boolean reverse_cost = true;
@@ -76,6 +77,12 @@ public class ProfileProperties {
 	}
 	public void setPgr_dd(boolean pgr_dd) {
 		this.pgr_dd = pgr_dd;
+	}
+	public int getRid() {
+		return rid;
+	}
+	public void setRid(int rid) {
+		this.rid = rid;
 	}
 	
 	
