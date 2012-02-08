@@ -57,6 +57,7 @@ public class DBProc {
 					retVal = new ProfileProperties();
 					retVal.setKey(key);
 					retVal.setId(rs.getInt("id"));
+					retVal.setRid(rs.getInt("rid"));
 					retVal.setpPublic(rs.getBoolean("public"));
 					retVal.setpEnabled(rs.getBoolean("enabled"));
 					retVal.setReverse_cost(rs.getBoolean("reverse_cost"));
@@ -446,7 +447,7 @@ public class DBProc {
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append("select id,key,title,description,reverse_cost,");
-		sb.append("public,enabled,pgr_sp,pgr_dd from app.profiles ");
+		sb.append("public,enabled,pgr_sp,pgr_dd,rid from app.profiles ");
 		
 		if( mKey != null ) {
 			sb.append("where key in (").append(mKey).append(") ");			
@@ -474,6 +475,7 @@ public class DBProc {
 				JSONArray  hosts   = new JSONArray();
 				
 				profile.put("id"          , rs.getInt("id"));
+				profile.put("rid"         , rs.getInt("rid"));
 				profile.put("key"         , rs.getString("key"));
 				profile.put("title"       , rs.getString("title"));
 				profile.put("description" , rs.getString("description"));
