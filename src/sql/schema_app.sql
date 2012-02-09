@@ -30,8 +30,8 @@ SET default_with_oids = false;
 CREATE TABLE classes (
     tag text,
     clazz integer NOT NULL,
-    defaultspeed integer NOT NULL DEFAULT 10,
-    enabled boolean NOT NULL DEFAULT true,
+    defaultspeed integer DEFAULT 10 NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
     id integer NOT NULL,
     title text NOT NULL
 );
@@ -73,9 +73,10 @@ SELECT pg_catalog.setval('classes_id_seq', 21, true);
 
 CREATE TABLE configuration (
     speed integer NOT NULL,
-    enabled boolean NOT NULL DEFAULT true,
+    enabled boolean DEFAULT true NOT NULL,
     pid integer NOT NULL,
-    cid integer NOT NULL
+    cid integer NOT NULL,
+    priority double precision DEFAULT 1.0 NOT NULL
 );
 
 
@@ -153,14 +154,14 @@ CREATE TABLE profiles (
     key text NOT NULL,
     title text NOT NULL,
     description text,
-    reverse_cost boolean NOT NULL DEFAULT true,
+    reverse_cost boolean DEFAULT true NOT NULL,
     id integer NOT NULL,
     rid integer,
-    public boolean NOT NULL DEFAULT true,
-    enabled boolean NOT NULL DEFAULT true,
+    public boolean DEFAULT true NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
     created timestamp with time zone DEFAULT now(),
-    pgr_sp boolean NOT NULL DEFAULT true,
-    pgr_dd boolean NOT NULL DEFAULT true
+    pgr_sp boolean DEFAULT true NOT NULL,
+    pgr_dd boolean DEFAULT true NOT NULL
 );
 
 
@@ -203,7 +204,7 @@ CREATE TABLE resources (
     title text NOT NULL,
     description text,
     resource text NOT NULL,
-    enabled boolean NOT NULL DEFAULT true
+    enabled boolean DEFAULT true NOT NULL
 );
 
 
@@ -298,28 +299,28 @@ rail	2	50	f	2	rail
 -- Data for Name: configuration; Type: TABLE DATA; Schema: app; Owner: postgres
 --
 
-COPY configuration (speed, enabled, pid, cid) FROM stdin;
-120	t	1	11
-30	t	1	12
-90	t	1	13
-30	t	1	14
-70	t	1	15
-30	t	1	16
-60	t	1	21
-30	t	1	22
-40	t	1	31
-50	t	1	32
-30	t	1	41
-30	t	1	42
-5	t	1	51
-5	t	1	62
-7	t	1	63
-10	t	1	71
-15	t	1	81
-5	t	1	91
-5	t	1	92
-10	f	1	1
-50	f	1	2
+COPY configuration (speed, enabled, pid, cid, priority) FROM stdin;
+120	t	1	11	1
+30	t	1	12	1
+90	t	1	13	1
+30	t	1	14	1
+70	t	1	15	1
+30	t	1	16	1
+60	t	1	21	1
+30	t	1	22	1
+40	t	1	31	1
+50	t	1	32	1
+30	t	1	41	1
+30	t	1	42	1
+5	t	1	51	1
+5	t	1	62	1
+7	t	1	63	1
+10	t	1	71	1
+15	t	1	81	1
+5	t	1	91	1
+5	t	1	92	1
+10	f	1	1	1
+50	f	1	2	1
 \.
 
 
