@@ -67,3 +67,12 @@ ul#icons span.ui-icon {
 	float: left;
 	margin: 0 4px;
 }
+
+.mSpeed {
+	width: 60px;
+}
+
+.mSlider {
+	paddding: 0 10px;
+	width: 80px;
+}

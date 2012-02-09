@@ -51,19 +51,15 @@
 		//:: Table Theme
 		//::::::::::::::::::::::::::
 		$(".jtable th").each(function() {
-
 			$(this).addClass("ui-state-default");
-
 		});
 		$(".jtable td").each(function() {
-
 			$(this).addClass("ui-widget-content");
-
 		});
 		$(".jtable tr").hover(function() {
-			$(this).children("td").addClass("ui-state-hover");
+			$(this).children("td").addClass("ui-state-highlight");
 		}, function() {
-			$(this).children("td").removeClass("ui-state-hover");
+			$(this).children("td").removeClass("ui-state-highlight");
 		});
 		//$(".jtable tr").click(function() {
 		//	$(this).children("td").toggleClass("ui-state-highlight");
@@ -91,6 +87,8 @@
 			}
 		});
 
+		$(".mSlider").slider({min:0,max:2,value:1,step:0.5});
+		
 		$("#resource").change(function() {
 			cs.setProfiles(cs.profileJSON);
 		});
@@ -236,72 +234,86 @@
 			<tr>
 				<th>Enabled</th>
 				<th>Road Class</th>
+				<th>Priority</th>
 				<th>Speed (km/h)</th>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="motorway_ck"></td>
 				<td>Motor Way</td>
-				<td><input type="text" value="" id="motorway_sp"></td>
+				<td><div id="motorway_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="motorway_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="motorwaylnk_ck"></td>
 				<td>Motor Way Link</td>
-				<td><input type="text" value="" id="motorwaylnk_sp"></td>
+				<td><div id="motorwaylnk_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="motorwaylnk_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="trunkway_ck"></td>
 				<td>Trunk Way</td>
-				<td><input type="text" value="" id="trunkway_sp"></td>
+				<td><div id="trunkway_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="trunkway_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="trunkwaylnk_ck"></td>
 				<td>Trunk Way Link</td>
-				<td><input type="text" value="" id="trunkwaylnk_sp"></td>
+				<td><div id="trunkwaylnk_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="trunkwaylnk_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="primary_ck"></td>
 				<td>Primary Street</td>
-				<td><input type="text" value="" id="primary_sp"></td>
+				<td><div id="primary_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="primary_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="primarylnk_ck"></td>
 				<td>Primary Street Link</td>
-				<td><input type="text" value="" id="primarylnk_sp"></td>
+				<td><div id="primarylnk_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="primarylnk_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="secondary_ck"></td>
 				<td>Secondary Street</td>
-				<td><input type="text" value="" id="secondary_sp"></td>
+				<td><div id="secondary_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="secondary_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="secondarylnk_ck"></td>
 				<td>Secondary Street Link</td>
-				<td><input type="text" value="" id="secondarylnk_sp"></td>
+				<td><div id="secondarylnk_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="secondarylnk_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="tertiary_ck"></td>
 				<td>Tertiary Street</td>
-				<td><input type="text" value="" id="tertiary_sp"></td>
+				<td><div id="tertiary_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="tertiary_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="residential_ck"></td>
 				<td>Residential Street</td>
-				<td><input type="text" value="" id="residential_sp"></td>
+				<td><div id="residential_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="residential_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="unclassified_ck"></td>
 				<td>Unclassified Way</td>
-				<td><input type="text" value="" id="unclassified_sp"></td>
+				<td><div id="unclassified_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="unclassified_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="pedestrian_ck"></td>
 				<td>Pedestrian Way</td>
-				<td><input type="text" value="" id="pedestrian_sp"></td>
+				<td><div id="pedestrian_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="pedestrian_sp"></td>
 			</tr>
 			<tr>
 				<td><input type="checkbox" id="cycleway_ck"></td>
 				<td>Cycleway</td>
-				<td><input type="text" value="" id="cycleway_sp"></td>
+				<td><div id="cycleway_sl" class=mSlider></div></td>
+				<td><input class="mSpeed" type="text" value="" id="cycleway_sp"></td>
 			</tr>
 		</table>
 			</fieldset>
