@@ -21,6 +21,6 @@
   <servlet-mapping>
      <servlet-name>RouteRestService</servlet-name>
      <!-- <url-pattern>/rest/*</url-pattern> -->
-     <url-pattern>/*</url-pattern>
+     <url-pattern>/web/*</url-pattern>
  </servlet-mapping>
 </web-app>
