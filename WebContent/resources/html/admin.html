@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Routing Service</title>
+
+<link type="text/css"
+	href="../../resources/css/ui-lightness/jquery-ui-1.8.17.custom.css" 
+	rel="stylesheet" />
+
+<link type="text/css"
+	href="../../resources/css/admin.css" rel="stylesheet" />
+	
+<script type="text/javascript" 
+	src="../../resources/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript"
+	src="../../resources/lib/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" 
+	src="../../resources/js/controlpage.js"></script>
+	
+<script type="text/javascript">
+	$(function() {
+		// Dialog			
+		
+		$('#loadingDialog').dialog({
+			autoOpen : false,
+			title    : "Routing-Service",
+			width    : 300,
+			height   : 95,
+			modal    : true
+		});
+		
+		$('#saveDialog').dialog({
+			autoOpen : false,
+			title    : "Routing-Service",
+			width    : 300,
+			height   : 95,
+			modal    : true
+		});
+		
+		$('#deleteDialog').dialog({
+			autoOpen : false,
+			title    : "Routing-Service",
+			width    : 300,
+			height   : 95,
+			modal    : true
+		});
+		
+
+		//::::::::::::::::::::::::::
+		//:: Table Theme
+		//::::::::::::::::::::::::::
+		$(".jtable th").each(function() {
+
+			$(this).addClass("ui-state-default");
+
+		});
+		$(".jtable td").each(function() {
+
+			$(this).addClass("ui-widget-content");
+
+		});
+		$(".jtable tr").hover(function() {
+			$(this).children("td").addClass("ui-state-hover");
+		}, function() {
+			$(this).children("td").removeClass("ui-state-hover");
+		});
+		//$(".jtable tr").click(function() {
+		//	$(this).children("td").toggleClass("ui-state-highlight");
+		//});
+	});
+	
+	$(document).ready(function() {
+
+		var cs = new controlService();
+		cs.resourceAjaxReq();
+		
+		$('#verifyDialog').dialog({
+			autoOpen : false,
+			title    : "Delete",
+			width    : 400,
+			modal    : true,
+			buttons  : {
+				"Ok" : function() {
+					$(this).dialog("close");
+					cs.deleteParams( $("#profile_key").val() );
+				},
+				"Cancel" : function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+
+		$("#resource").change(function() {
+			cs.setProfiles(cs.profileJSON);
+		});
+		
+		$("#title").change(function() {
+			cs.setProfileVals($(this).attr('value'));
+		});
+				
+		$("#deleteBtn").click(function(){
+			$("#verifyDialog").dialog("open");
+		});
+		
+		$("#saveBtn").click(function(){cs.saveParams();});
+		
+		$("#refreshBtn").click(function(){
+			if( $("#refreshBtn").val() == "Cancel" ) {
+				cs.resetToDefault(cs);
+				cs.setProfiles(cs.profileJSON);
+			}
+			else {
+				cs.resourceAjaxReq();
+			}
+		});
+		
+		$("#newBtn").click(function(){
+			$("#keyDiv").html('<input type="text" id="title">');
+			$("#refreshBtn").val("Cancel");
+			$("#deleteBtn").attr("disabled","disabled");
+			$("#generateBtn").removeAttr("disabled");
+			cs.clearParams();
+		});
+		
+		$("#generateBtn").click(function(){
+			cs.keyAjaxReq();
+		})
+	});
+	
+</script>
+
+</head>
+<body>
+
+	<!-- ui-dialog -->
+	<div id="verifyDialog" align="center">
+		<p>Do you really want to delete this profile?</p>
+	</div>
+	
+	<div id="loadingDialog" align="center">
+		<p><img src="../../resources/img/ajax-loader.gif"> 
+			&nbsp;<i>Loading Profiles</i></p>
+	</div>
+
+	<div id="saveDialog" align="center">
+		<p><img src="../../resources/img/ajax-loader.gif"> 
+			&nbsp;<i>Saving Profile</i></p>
+	</div>
+	
+	<div id="deleteDialog" align="center">
+		<p><img src="../../resources/img/ajax-loader.gif"> 
+			&nbsp;<i>Deleting Profile</i></p>
+	</div>
+	
+	<!-- main -->
+	<div id="main" class="ui-widget-content ui-corner-all">
+		<h3 class="ui-widget-header ui-corner-all">Routing Control Panel</h3>
+		<p>
+		<div id="profile_setting" style="float:left;width: 50%;">
+			<fieldset>
+				<legend>Profile Settings</legend>
+				<p>
+				<table style="border: 0px:">
+					<tr>
+						<td>Resource</td>
+						<td>
+						   <select id="resource" style="width:200px;"></select>
+						</td>
+					</tr>
+					<tr>
+						<td>Profile</td>
+						<td><div id="keyDiv">
+						      <select id="title" style="width:200px;"></select>
+						    </div>
+						 </td>
+					</tr>
+					<tr>
+						<td>Description</td>
+						<td><textarea id="description" rows="3" 
+							style="width:220px;"></textarea></td>
+					</tr>
+					<tr>
+						<td>Key</td>
+						<td><input id="profile_key" type="text" readonly="readonly">
+							<input id="generateBtn" type="button" 
+								value="Generate" disabled="disabled">
+							<img src="../../resources/img/ajax-loader.gif" 
+							     id="loader" style="display:none"></td>
+					</tr>
+					<tr>
+						<td>Services</td>
+						<td><input type="checkbox" id="shortest_path">
+							Shortest Path(routing)</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><input type="checkbox" id="driving_dist">
+							Driving Distance Polygon</td>
+					</tr>
+				</table>
+				<p>
+			</fieldset>
+			<fieldset>
+				<legend>Access Restrictions</legend>
+				<p>
+					<input type="checkbox" id="restricted">
+						Restricted Service (limited access)
+				</p>
+				<p>List of host names that are allowed to access this service
+					(White List). Add one(1) host name per line</p>
+				<textarea id="hosts" style="width:300px;" rows="5"></textarea>
+				<p>
+			</fieldset>
+			<p>
+			<table style="border:0px;">
+			<tr>
+			<td><input type="button" id="saveBtn"    value="Save"></td>
+			<td><input type="button" id="deleteBtn"  value="Delete"></td>
+			<td><input type="button" id="refreshBtn" value="Refresh"></td>
+			<td><input type="button" id="newBtn"     value="New Profile"></td>
+			</tr>
+			</table>
+		</div>
+		<div style="float:right;width:50%">
+			<fieldset>
+			<legend>Road Network Settings</legend>
+			<p>
+			The following list of road classes allow fine-grained tuning of
+			the routing costs.
+			</p>
+			<input type="checkbox" id="rev_cost">
+				Handle one-way restrictions (reverse-cost)
+			<p>
+			<table class="jtable">
+			<tr>
+				<th>Enabled</th>
+				<th>Road Class</th>
+				<th>Speed (km/h)</th>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="motorway_ck"></td>
+				<td>Motor Way</td>
+				<td><input type="text" value="" id="motorway_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="motorwaylnk_ck"></td>
+				<td>Motor Way Link</td>
+				<td><input type="text" value="" id="motorwaylnk_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="trunkway_ck"></td>
+				<td>Trunk Way</td>
+				<td><input type="text" value="" id="trunkway_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="trunkwaylnk_ck"></td>
+				<td>Trunk Way Link</td>
+				<td><input type="text" value="" id="trunkwaylnk_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="primary_ck"></td>
+				<td>Primary Street</td>
+				<td><input type="text" value="" id="primary_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="primarylnk_ck"></td>
+				<td>Primary Street Link</td>
+				<td><input type="text" value="" id="primarylnk_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="secondary_ck"></td>
+				<td>Secondary Street</td>
+				<td><input type="text" value="" id="secondary_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="secondarylnk_ck"></td>
+				<td>Secondary Street Link</td>
+				<td><input type="text" value="" id="secondarylnk_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="tertiary_ck"></td>
+				<td>Tertiary Street</td>
+				<td><input type="text" value="" id="tertiary_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="residential_ck"></td>
+				<td>Residential Street</td>
+				<td><input type="text" value="" id="residential_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="unclassified_ck"></td>
+				<td>Unclassified Way</td>
+				<td><input type="text" value="" id="unclassified_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="pedestrian_ck"></td>
+				<td>Pedestrian Way</td>
+				<td><input type="text" value="" id="pedestrian_sp"></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="cycleway_ck"></td>
+				<td>Cycleway</td>
+				<td><input type="text" value="" id="cycleway_sp"></td>
+			</tr>
+		</table>
+			</fieldset>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+</body>
+</html>

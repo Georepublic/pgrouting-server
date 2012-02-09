@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript"
+	src="../../resources/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript"
+	src="../../resources/js/controlpage.js"></script>
+
+<script>
+	$(document).ready(function() {
+
+		var cs = new controlService();
+		cs.profileAjaxReq();
+
+		// $("#foo").val(json.data[0].profile.description);
+		// $("#foo2").attr("disabled","disabled");
+
+		$("#profile_key").change(function() {
+			cs.setProfileVals($(this).attr('value'));
+		});
+		
+		$("#deletebtn").click(function(){cs.deleteParams(
+				$("#profile_key").val());});
+		
+		$("#savebtn").click(function(){cs.saveParams();});
+	});
+</script>
+</head>
+<body>
+	<h1>Hello Mundo1</h1>
+	<br>
+	<label>Profile Key:</label>
+	<select id="profile_key"></select>
+	<br>
+	<label>Title:</label>
+	<input type="text" value="" id="title">
+	<br>
+	<label>Description:</label>
+	<input type="text" value="" id="description">
+	<br>
+	<input type="checkbox" id="shortest_path">
+	<label>ShortestPath:</label>
+	<br>	
+	<input type="checkbox" id="driving_dist">
+	<label>DrivingDistance:</label>
+	<br>	
+	<input type="checkbox" id="restricted">
+	<label>Restricted</label>
+	<br>	
+	<input type="checkbox" id="rev_cost">
+	<label>Reverse Cost</label>
+	<br>
+	<table>
+		<tr>
+			<td><input type="checkbox" id="motorway_ck"></td>
+			<td>Motor Way</td>
+			<td><input type="text" value="" id="motorway_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="motorwaylnk_ck"></td>
+			<td>Motor Way Link</td>
+			<td><input type="text" value="" id="motorwaylnk_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="trunkway_ck"></td>
+			<td>Trunk Way</td>
+			<td><input type="text" value="" id="trunkway_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="trunkwaylnk_ck"></td>
+			<td>Trunk Way Link</td>
+			<td><input type="text" value="" id="trunkwaylnk_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="primary_ck"></td>
+			<td>Primary Street</td>
+			<td><input type="text" value="" id="primary_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="primarylnk_ck"></td>
+			<td>Primary Street Link</td>
+			<td><input type="text" value="" id="primarylnk_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="secondary_ck"></td>
+			<td>Secondary Street</td>
+			<td><input type="text" value="" id="secondary_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="secondarylnk_ck"></td>
+			<td>Secondary Street Link</td>
+			<td><input type="text" value="" id="secondarylnk_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="tertiary_ck"></td>
+			<td>Tertiary Street</td>
+			<td><input type="text" value="" id="tertiary_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="residential_ck"></td>
+			<td>Residential Street</td>
+			<td><input type="text" value="" id="residential_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="unclassified_ck"></td>
+			<td>Unclassified Way</td>
+			<td><input type="text" value="" id="unclassified_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="pedestrian_ck"></td>
+			<td>Pedestrian Way</td>
+			<td><input type="text" value="" id="pedestrian_sp"></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="cycleway_ck"></td>
+			<td>Cycleway</td>
+			<td><input type="text" value="" id="cycleway_sp"></td>
+		</tr>
+	</table>
+	<br><br>
+	<input type="button" id="savebtn" title="save" value="Save">
+	<input type="button" id="deletebtn" title="delete" value="Delete">
+</body>
+</html>
