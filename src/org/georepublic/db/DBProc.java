@@ -485,8 +485,9 @@ public class DBProc {
 				profile.put("pgr_sp"      , rs.getBoolean("pgr_sp"));
 				profile.put("pgr_dd"      , rs.getBoolean("pgr_dd"));
 				
-				sql = "select cid,speed,enabled from app.configuration "+
-					"where pid="+ rs.getInt("id");
+				sql = "select cid,speed,enabled,priority "+
+				    "from app.configuration "+
+					"where pid="+ rs.getInt("id"); 
 				Statement stmt2 = conn.createStatement();
 				ResultSet rs2   = stmt2.executeQuery(sql);
 				
@@ -495,6 +496,7 @@ public class DBProc {
 					c.put("cid",     rs2.getInt("cid"));
 					c.put("speed",   rs2.getInt("speed"));
 					c.put("enabled", rs2.getBoolean("enabled"));
+					c.put("priority",rs2.getDouble("priority"));
 					
 					config.add(c);
 				}
@@ -690,8 +692,9 @@ public class DBProc {
 			}
 			
 			PreparedStatement pstmt3 = conn.prepareStatement(
-					"insert into app.configuration (pid,cid,speed,enabled) "+
-					"values (?,?,?,?)" );
+					"insert into app.configuration "+
+					"(pid,cid,speed,enabled,priority) "+
+					"values (?,?,?,?,?)" );
 			
 			for(int k=0;k<inConf.size();k++) {
 				JSONObject conf = inConf.getJSONObject(k);
@@ -699,6 +702,7 @@ public class DBProc {
 				pstmt3.setInt(2, conf.getInt("cid"));
 				pstmt3.setInt(3, conf.getInt("speed"));
 				pstmt3.setBoolean(4, conf.getBoolean("enabled"));
+				pstmt3.setDouble( 5, conf.getDouble("priority"));
 				pstmt3.execute();
 			}
 			
