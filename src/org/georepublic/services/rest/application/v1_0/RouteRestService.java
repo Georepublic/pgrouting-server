@@ -82,7 +82,7 @@ public class RouteRestService {
 		if( json == null ) {
 			return "No JSON Request Parameter";
 		}
-		
+		 
 		try {
 			JSONObject jo = new JSONObject(json);
 			String proj   = jo.getString("projection");
@@ -183,6 +183,33 @@ public class RouteRestService {
 	//::::::::::::::::::::::::::::::::::
 	//:  Admin REST Requests
 	//::::::::::::::::::::::::::::::::::
+	@Path("/admin.html")
+	@GET
+	public String controlPage(
+			@Context HttpServletRequest request,
+			@Context HttpServletResponse response ) {
+		
+		if( !checkHostInfo(request.getRemoteHost(),
+				AdminProperties.getHttp_allowed()) ) {
+			if(!checkHostInfo(request.getRemoteAddr(),
+					AdminProperties.getHttp_allowed()) )
+				return "Not authorized to use this Service[ "+
+				request.getRemoteAddr() +","+
+				request.getRemoteHost() +" ]";
+		}
+		
+		try {
+			request.getRequestDispatcher(
+				AdminProperties.getHttp_admin_url()).forward(
+						request, response);
+		}   
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return "";
+	}
+	
 	@Path("/admin/key.json")
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
@@ -325,7 +352,7 @@ public class RouteRestService {
 					request.getRemoteAddr() +","+
 					request.getRemoteHost() +" ]";
 		}
-		
+	
 		if(json == null || json.length() < 10 ) {
 			try {
 				JSONObject jo     = new JSONObject();
