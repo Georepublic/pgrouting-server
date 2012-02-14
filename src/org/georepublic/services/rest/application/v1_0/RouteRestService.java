@@ -222,8 +222,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-					request.getRemoteAddr() +","+
-					request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +"]";
 		}
 		 
 		DBProc dbProc = new DBProc();
@@ -243,8 +242,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-					request.getRemoteAddr() +","+
-					request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +"]";
 		}
 		 
 		DBProc dbProc = new DBProc();
@@ -264,8 +262,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-					request.getRemoteAddr() +","+
-					request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +"]";
 		}
 		 
 		DBProc dbProc = new DBProc();
@@ -286,8 +283,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-					request.getRemoteAddr() +","+
-					request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +"]";
 		}
 		 
 		DBProc dbProc = new DBProc();
@@ -349,8 +345,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-					request.getRemoteAddr() +","+
-					request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +"]";
 		}
 	
 		if(json == null || json.length() < 10 ) {
@@ -385,8 +380,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-					request.getRemoteAddr() +","+
-					request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +"]";
 		}
 		
 		if(json == null || json.length() < 10 ) {
@@ -421,8 +415,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-					request.getRemoteAddr() +","+
-					request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +"]";
 		}
 		
 		if(json == null || json.length() < 5 ) {
