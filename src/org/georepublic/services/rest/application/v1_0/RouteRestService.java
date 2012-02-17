@@ -194,8 +194,7 @@ public class RouteRestService {
 			if(!checkHostInfo(request.getRemoteAddr(),
 					AdminProperties.getHttp_allowed()) )
 				return "Not authorized to use this Service[ "+
-				request.getRemoteAddr() +","+
-				request.getRemoteHost() +" ]";
+					request.getRemoteAddr() +" ]";
 		}
 		
 		try {
