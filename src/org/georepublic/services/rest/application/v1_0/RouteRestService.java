@@ -69,8 +69,7 @@ public class RouteRestService {
 			if( !checkHostInfo(request.getRemoteHost(),prop.getHosts()) ) {
 				if(!checkHostInfo(request.getRemoteAddr(),prop.getHosts()) )
 					return "Not authorized to use this Service[ "+
-						request.getRemoteAddr() +","+
-						request.getRemoteHost() +" ]";
+						request.getRemoteAddr() + " ]";
 			}
 		}
 		
@@ -137,8 +136,7 @@ public class RouteRestService {
 			if( !checkHostInfo(request.getRemoteHost(),prop.getHosts()) ) {
 				if(!checkHostInfo(request.getRemoteAddr(),prop.getHosts()) )
 					return "Not authorized to use this Service[ "+
-						request.getRemoteAddr() +","+
-						request.getRemoteHost() +" ]";
+						request.getRemoteAddr() + " ]";
 			}
 		}
 		
