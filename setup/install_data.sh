@@ -101,13 +101,13 @@ fi
 # ------------------------------------------------------------------------------
 
 printf "%-25s %-50s\n" "Create database:" $database
-sudo -u postgres createdb -E UTF8 -T template_routing $database
+createdb -U postgres -E UTF8 -T template_routing $database
 
 # Load tables and functions
 printf "%-25s %-50s\n\n" "Load tables and functions ..."
-sudo -u postgres psql --quiet -d $database -f $DIRECTORY/../src/sql/routing_service_wrapper.sqlschema_app.sql
-sudo -u postgres psql --quiet -d $database -f $DIRECTORY/../src/sql/schema_app.sql
-sudo -u postgres psql --quiet -d $database -c "CREATE SCHEMA data"
+psql -U postgres --quiet -d $database -f $DIRECTORY/../src/sql/routing_service_wrapper.sql
+psql -U postgres --quiet -d $database -f $DIRECTORY/../src/sql/schema_app.sql
+psql -U postgres --quiet -d $database -c "CREATE SCHEMA data"
 
 # Process road network data
 printf "%-25s %-50s\n\n" "Setup osm2po ..."
@@ -127,16 +127,16 @@ psql -U postgres -d routing -c "UPDATE public.geometry_columns SET f_table_schem
 
 # Add sample profile view
 printf "%-25s %-50s\n\n" "Add sample profile view ..."
-sudo -u postgres psql --quiet -d $database -f $DIRECTORY/../src/sql/view_profile_1.sql
+psql -U postgres --quiet -d $database -f $DIRECTORY/../src/sql/view_profile_1.sql
 
 # Show database
 printf "%-25s %-50s\n" "Available tables:"
 query="SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema IN ('data','app','public') ORDER BY table_schema, table_name;"
-sudo -u postgres psql -t -d $database -c "$query"
+psql -U postgres -t -d $database -c "$query"
 
 # VACUUM database
 printf "%-25s %-50s\n" "VACUUM database ..."
-sudo -u postgres psql --quiet -d $database -c "VACUUM FULL;"
+psql -U postgres --quiet -d $database -c "VACUUM FULL;"
 
 printf "\n"
 printf "#############################################################################\n"
