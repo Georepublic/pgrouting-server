@@ -346,8 +346,8 @@ BEGIN
 	cView := 'create or replace view public.'|| tabName || ' AS ' ||
 		'SELECT osm.id AS gid, cls.title AS class, ' || 
 		'round(osm.km * 1000::double precision) AS length, '||
-		'osm.osm_name AS name, CASE WHEN osm.cost < 1000000::double precision '||
 		'round(10 * osm.km / cls.speed::double precision * 3600::double precision)/10 AS duration,'||
+		'osm.osm_name AS name, CASE WHEN osm.cost < 1000000::double precision '||
 		'THEN cls.priority * osm.km / cls.speed::double precision * 3600::double precision ' ||
 		'ELSE 1000000::double precision END AS cost,' ||
 		'CASE WHEN osm.reverse_cost < 1000000::double precision ' || 
