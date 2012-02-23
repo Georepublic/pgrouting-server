@@ -356,7 +356,7 @@ BEGIN
 		'END AS reverse_cost, osm.source, osm.target, osm.x1, ' || 
 		'osm.y1, osm.x2, osm.y2, osm.'||tGeom||' AS the_geom, cls.pid ' ||
 		'FROM '|| road_table ||' osm ' ||
-		'LEFT JOIN ( SELECT a.speed, b.defaultspeed, a.enabled AS '|| 
+		'LEFT JOIN ( SELECT a.priority, a.speed, b.defaultspeed, a.enabled AS '|| 
 		'cfg_enabled, b.enabled AS cls_enabled, a.pid, a.cid AS class, b.tag, b.title
            FROM app.configuration a
       LEFT JOIN app.classes b ON b.clazz = a.cid
