@@ -138,8 +138,8 @@ public class DBProc {
 		String reverse_cost = "'reverse_cost'";
 		
 		if( mode.compareToIgnoreCase("length") == 0) {
-			cost = "length";         //"'st_length(the_geom)'";
-			reverse_cost = "length"; //"'st_length(the_geom)'";
+			cost         = "'length'"; //"'st_length(the_geom)'";
+			reverse_cost = "'length'"; //"'st_length(the_geom)'";
 		}
 		
 		sb.append("select st_asgeojson(the_geom) as the_geom ");
